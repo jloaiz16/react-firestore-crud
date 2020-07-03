@@ -1,0 +1,12 @@
+.vertical-center {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  margin-right: 2%;
+  padding: 0px 10px 0px 10px;
+  border-radius: 3px;
+}
+
+.form-section {
+  margin-bottom: 5%;
+}
