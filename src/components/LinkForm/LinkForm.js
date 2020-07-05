@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
+import { db } from '../../config/firebase';
 
 const LinkForm = (props) => {
   const initialState = {
@@ -20,6 +21,17 @@ const LinkForm = (props) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
+
+  const getLinkById = async (id) => {
+    const link = await db.collection('links').doc(id).get();
+    setValues({ ...link.data() });
+  };
+
+  useEffect(() => {
+    props.currentId
+      ? getLinkById(props.currentId)
+      : setValues({ url: '', name: '', description: '' });
+  }, [props.currentId]);
 
   return (
     <form className='card card-body' onSubmit={handleSubmit}>
@@ -64,7 +76,13 @@ const LinkForm = (props) => {
         ></textarea>
       </div>
 
-      <button className='btn btn-primary btn-block'>Save</button>
+      <button
+        className={
+          'btn  btn-block ' + (props.currentId ? 'btn-warning' : 'btn-primary')
+        }
+      >
+        {props.currentId ? 'Update' : 'Save'}
+      </button>
     </form>
   );
 };
